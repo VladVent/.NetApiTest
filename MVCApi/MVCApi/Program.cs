@@ -1,9 +1,15 @@
 using MVC.DAL.Context;
+using MVC.DAL.Data;
+using MVC.DAL.Helper;
+using MVC.DAL.Interfaces;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDbContext<ContextMVC>();
 var app = builder.Build();
 
@@ -22,6 +28,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
 
 app.Run();

@@ -2,6 +2,7 @@
 using MVC.DAL.Context;
 using MVC.DAL.Entities;
 using MVC.DAL.Interfaces;
+using MVC.DAL.Specification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,23 @@ namespace MVC.DAL.Data
             _context = context;
         }
 
+        public Task<object> GetAccountByName(bool comp)
+        {
+            throw new NotImplementedException();
+        }
+
+     
+
+        public async Task<T> GetAccountByName(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).FirstOrDefaultAsync();
+        }
+
+        public Task<T> GetAccountByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
@@ -27,9 +45,26 @@ namespace MVC.DAL.Data
         {
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }
+
+        public Task ListAsync(FullAccount spec)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
+
+        public Task<T> Update(Contact contact)
+        {
+            throw new NotImplementedException();
+        }
+
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpesificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
+
     }
 }

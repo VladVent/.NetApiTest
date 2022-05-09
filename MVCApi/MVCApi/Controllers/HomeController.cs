@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MVC.DAL.Context;
 using MVC.DAL.Entities;
 using MVC.DAL.Interfaces;
 using MVC.DAL.Specification;
@@ -24,18 +25,70 @@ namespace MVCApi.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("{Id}")]
-        public async Task<ActionResult<ApiDto>> AccountById(int Id)
+        //public async Task<IActionResult> Incedents(ApiDto _api)
+        //{
+
+        //    var incident = new Incident
+        //    {
+        //        Accounts = new List<Account>
+        //     {
+        //     new Account
+        //     {
+        //         AccountName = _api.AccountName,
+        //         Contact = new List<Contact>
+        //         {
+        //             new Contact
+        //             {
+        //                 ContactFirstName = _api.ContactFirstName,
+        //                 ContactLastName = _api.ContactLastName,
+        //                 ContactEmail = _api.ContactEmail,
+        //             }
+        //         },
+        //     }
+        // }
+        //    };
+        //    return Ok(_api);
+        //}
+
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyList<ApiDto>>> GetGames()
         {
+            var spec = new FullAccount();
 
-            var spec = new FullAccount(Id);
+            var acc = await accRepo.ListAsync(spec);
 
-            var acc = await accRepo.GetEntityWithSpec(spec);
+            return Ok(mapper
+                .Map<IReadOnlyList<Account>, IReadOnlyList<ApiDto>>(acc));
+        }
 
-            return mapper.Map<Account, ApiDto>(acc);
+        /* [HttpGet("{Id}")]
+         public async Task<ActionResult<ApiDto>> AccountById(int Id)
+         {
 
+             var spec = new FullAccount(Id);
+
+             var acc = await accRepo.GetEntityWithSpec(spec);
+
+             return mapper.Map<Account, ApiDto>(acc);
+
+
+         }*/
+
+        [HttpGet("account/{name}")]
+        public async Task<ActionResult<ApiDto>> GetAccountByName(string name)
+        {
+            var spec = new FullAccount(name);
+
+            var acc = await accRepo.GetAccountByName(spec);
+            if (acc == null)
+            {
+                return NotFound();
+            }
+                return mapper.Map<Account, ApiDto>(acc);
 
         }
+
+      
 
     }
 }

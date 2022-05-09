@@ -1,4 +1,5 @@
-﻿using MVC.DAL.Entities;
+﻿using MVC.DAL.Context;
+using MVC.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,12 @@ namespace MVC.DAL.Specification
             AddInclude(x => x.Incident);
             AddInclude(x => x.Contact);
         }
-
-        public FullAccount(int id):
-            base(x => x.Id == id)
+        public FullAccount(string a)
+        : base (x=>x.AccountName == a)
         {
-            AddInclude(x => x.Incident);
-            AddInclude(x => x.Contact);
+                AddInclude(x => x.Incident);
+                AddInclude(x => x.Contact);
         }
+
     }
 }
