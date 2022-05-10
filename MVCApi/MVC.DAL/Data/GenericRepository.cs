@@ -46,10 +46,13 @@ namespace MVC.DAL.Data
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }
 
-        public Task ListAsync(FullAccount spec)
+        public async Task<IReadOnlyList<Contact>> ListAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Contacts
+                .Include(g => g.Account)
+                .ToListAsync();
         }
+
 
         public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         {
@@ -61,7 +64,7 @@ namespace MVC.DAL.Data
 
         public string UpdateContacts(Contact contact, string name)
         {
-            var item = _context.Accounts.FirstOrDefault(x => x.AccountName == name);
+            var item = GetAccountName(name);
             if (item != null)
                 item.Contact = new List<Contact>
                  {
@@ -75,7 +78,31 @@ namespace MVC.DAL.Data
                 };
             _context.Update(item);
             _context.SaveChanges();
-            return "Hey!! Data Updated Successfully...";
+            return "U Create new Contact";
+        }
+
+        public string UpdateInsedentDescription(Incident incident, string name)
+        {
+            var item = GetAccountName(name);
+            if (item != null)
+                item.Incident = new Incident
+                {
+                    IncidentDescription = incident.IncidentDescription
+                };
+            Update(item);
+            return "U Create New Description";
+        }
+
+        private void Update(object item)
+        {
+            _context.Update(item);
+            _context.SaveChanges();
+           
+        }
+
+        private Account GetAccountName(string name)
+        {
+            return _context.Accounts.FirstOrDefault(x => x.AccountName == name);
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
@@ -83,5 +110,10 @@ namespace MVC.DAL.Data
             return SpesificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
         }
 
+        public void CreatAccount(Incident incident)
+        {
+            _context.Add(incident);
+            _context.SaveChanges();
+        }
     }
 }

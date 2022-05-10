@@ -17,7 +17,7 @@ namespace MVC.DAL.Helper
         {
             CreateMap<Account, ApiDto>()
              .ForMember(d => d.AccountName, o => o.MapFrom(s => s.AccountName))
-            .ForMember(d => d.IncidentDescription, o => o.MapFrom(s => s.Incident.Description))
+            .ForMember(d => d.IncidentDescription, o => o.MapFrom(s => s.Incident.IncidentDescription))
                 .AfterMap((model, entity) =>
                 {
                     foreach (var efcontact in model.Contact)

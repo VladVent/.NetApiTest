@@ -26,7 +26,7 @@ namespace MVCApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ApiDto>>> GetGames()
+        public async Task<ActionResult<IReadOnlyList<ApiDto>>> GetAccounts()
         {
             var spec = new FullAccount();
 
@@ -46,15 +46,47 @@ namespace MVCApi.Controllers
             {
                 return NotFound();
             }
-                return mapper.Map<Account, ApiDto>(acc);
+            return mapper.Map<Account, ApiDto>(acc);
 
         }
+        [HttpPut]
+        public IActionResult CreateAccount(ApiDto _api)
+        {
+            var incident = new Incident
+            {
+                IncidentDescription = _api.IncidentDescription,
+                Accounts = new List<Account>
+                 {
+                 new Account
+                 {
+                     AccountName = _api.AccountName,
+                     Contact = new List<Contact>
+                     {
+                         new Contact
+                         {
+                             ContactFirstName = _api.ContactFirstName,
+                             ContactLastName = _api.ContactLastName,
+                             ContactEmail = _api.ContactEmail,
+                         }
+                     },
+                 }
+             }
+            };
+           accRepo.CreatAccount(incident);
+            return Ok();
+        }
 
-      [HttpPut("account/{name}")]
-        public string UpdateContact([FromBody]Contact contact, string name)
+        [HttpPut("UpdateContact/{name}")]
+        public string UpdateContact([FromBody] Contact contact, string name)
         {
             return accRepo.UpdateContacts(contact, name);
         }
 
+        
+        [HttpPut("description/{name}")]
+        public string UpdateIncidentDescription([FromBody]Incident incident, string name)
+        {
+            return accRepo.UpdateInsedentDescription(incident, name);
+        }
     }
 }

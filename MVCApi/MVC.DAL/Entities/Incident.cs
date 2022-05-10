@@ -14,8 +14,9 @@ namespace MVC.DAL.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string IncidentName { get; set; } = Guid.NewGuid().ToString();
-        public string Description { get; set; }
+        public string IncidentDescription { get; set; }
 
+        //[Required]
         public virtual ICollection<Account> Accounts { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,11 @@ namespace MVC.DAL.Entities
 {
     [Table("Accounts")]
     public class Account : BaseEntity
-    {
-        internal List<Contact> cont;
+    { 
 
         public string AccountName { get; set; }
 
+        [Required]
         public virtual ICollection<Contact> Contact { get; set; }
 
         [ForeignKey(nameof(IncidentName))]
