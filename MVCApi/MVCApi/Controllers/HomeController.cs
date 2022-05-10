@@ -73,7 +73,7 @@ namespace MVCApi.Controllers
              }
             };
            accRepo.CreatAccount(incident);
-            return Ok();
+            return Ok("U Create New Account");
         }
 
         [HttpPut("UpdateContact/{name}")]
