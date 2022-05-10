@@ -17,6 +17,6 @@ namespace MVC.DAL.Interfaces
         Task<object> GetAccountByName(bool comp);
         Task<T> GetAccountByName(string name);
         Task<T> GetAccountByName(ISpecification<T> spec);
-        Task<T> Update(Contact contact);
+        string UpdateContacts(Contact contact, string name);
     }
 }

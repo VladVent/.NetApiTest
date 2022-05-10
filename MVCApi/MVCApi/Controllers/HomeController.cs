@@ -25,31 +25,6 @@ namespace MVCApi.Controllers
             this.mapper = mapper;
         }
 
-        //public async Task<IActionResult> Incedents(ApiDto _api)
-        //{
-
-        //    var incident = new Incident
-        //    {
-        //        Accounts = new List<Account>
-        //     {
-        //     new Account
-        //     {
-        //         AccountName = _api.AccountName,
-        //         Contact = new List<Contact>
-        //         {
-        //             new Contact
-        //             {
-        //                 ContactFirstName = _api.ContactFirstName,
-        //                 ContactLastName = _api.ContactLastName,
-        //                 ContactEmail = _api.ContactEmail,
-        //             }
-        //         },
-        //     }
-        // }
-        //    };
-        //    return Ok(_api);
-        //}
-
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<ApiDto>>> GetGames()
         {
@@ -60,19 +35,6 @@ namespace MVCApi.Controllers
             return Ok(mapper
                 .Map<IReadOnlyList<Account>, IReadOnlyList<ApiDto>>(acc));
         }
-
-        /* [HttpGet("{Id}")]
-         public async Task<ActionResult<ApiDto>> AccountById(int Id)
-         {
-
-             var spec = new FullAccount(Id);
-
-             var acc = await accRepo.GetEntityWithSpec(spec);
-
-             return mapper.Map<Account, ApiDto>(acc);
-
-
-         }*/
 
         [HttpGet("account/{name}")]
         public async Task<ActionResult<ApiDto>> GetAccountByName(string name)
@@ -88,7 +50,11 @@ namespace MVCApi.Controllers
 
         }
 
-      
+      [HttpPut("account/{name}")]
+        public string UpdateContact([FromBody]Contact contact, string name)
+        {
+            return accRepo.UpdateContacts(contact, name);
+        }
 
     }
 }

@@ -25,7 +25,7 @@ namespace MVC.DAL.Data
             throw new NotImplementedException();
         }
 
-     
+
 
         public async Task<T> GetAccountByName(ISpecification<T> spec)
         {
@@ -56,9 +56,26 @@ namespace MVC.DAL.Data
             return await ApplySpecification(spec).ToListAsync();
         }
 
-        public Task<T> Update(Contact contact)
+        
+        
+
+        public string UpdateContacts(Contact contact, string name)
         {
-            throw new NotImplementedException();
+            var item = _context.Accounts.FirstOrDefault(x => x.AccountName == name);
+            if (item != null)
+                item.Contact = new List<Contact>
+                 {
+                     new Contact
+                     {
+
+                         ContactFirstName = contact.ContactFirstName,
+                         ContactLastName = contact.ContactLastName,
+                         ContactEmail =contact.ContactEmail,
+                     }
+                };
+            _context.Update(item);
+            _context.SaveChanges();
+            return "Hey!! Data Updated Successfully...";
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)

@@ -10,7 +10,8 @@ namespace MVC.DAL.Entities
     [Table("Accounts")]
     public class Account : BaseEntity
     {
-        
+        internal List<Contact> cont;
+
         public string AccountName { get; set; }
 
         public virtual ICollection<Contact> Contact { get; set; }
